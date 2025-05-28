@@ -185,9 +185,9 @@ function banner(){
     echo -e " \__ \  __/ (_| | (_) |  __/ (__) | |_| | | | || (_) | | | | |_ "
     echo -e " |___/\___|\__, |\___/ \___|       \__,_|_| |_| \___/|_| |_|\__|"
     echo -e "            __/ |                                               "
-    echo -e "           |___/             $LPURPLE mrbvrz$LCYAN -$RED https://hasansuryaman.com        "
+    echo -e "           |___/             $LPURPLE mrbvrz$WHITE -$LRED https://hasansuryaman.com"
     echo ""
-    echo -e "$LYELLOW ---------------------------------------------------------------"
+    echo -e "$WHITE ---------------------------------------------------------------"
     echo ""
 }
 
