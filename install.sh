@@ -29,31 +29,38 @@ WINE_FONT_DIR="$HOME/.wine/drive_c/windows/Fonts/"
 
 # Check Internet Conection
 function cekkoneksi(){
-    echo -e "$BLUE [ * ] Checking for internet connection"
-    sleep 1
-    
+    # For this function, I'm using carriage returning (\r) to erase
+    # an already printed line
+
+    # print section title
+    echo -ne " ${WHITE}[|||||||||] Checking for internet connection...${RESTORE}"
+    sleep 1.5
+    # erase section title
+    echo -ne "\r                                                   "
+
     # List all network interfaces
     interfaces=$(ip -o link show | awk -F': ' '{print $2}')
-    
+
     # Flag to track internet connection status
     internet_connected=0
-    
+
     # Iterate over each network interface and check internet connectivity
     for interface in $interfaces; do
-        echo -e "Testing internet connectivity on interface: $interface"
+        echo -ne "\r ${WHITE}[${LYELLOW} TESTING ${WHITE}]${RESTORE} Interface: \`${LCYAN}$interface${RESTORE}\`"
         if ping -c 1 -I $interface google.com &> /dev/null; then
-            echo -e "$GREEN [ ✔ ]$BLUE Internet Connection on interface $interface ➜$GREEN CONNECTED!\n"
+            echo -ne "\r ${WHITE}[${LGREEN}CONNECTED${WHITE}]${RESTORE} Interface: \`${LCYAN}$interface${RESTORE}\`"
+            echo " " # break line
             internet_connected=1
             break  # If connected on any interface, no need to continue testing
         else
-            echo -e "$RED [ X ]$BLUE Internet Connection on interface $interface ➜$RED OFFLINE!\n"
+            echo -ne "\r ${WHITE}[${LRED} OFFLINE ${WHITE}]${RESTORE} Interface: \`${LCYAN}$interface${RESTORE}\`\r"
         fi
     done
-    
+
     # Check overall connection status
     if [ $internet_connected -eq 0 ]; then
-        echo -e "$RED [ X ]$BLUE Internet Connection ➜$RED OFFLINE!\n"
-        echo -e "$RED Sorry, you really need an internet connection...."
+        echo -e "\r ${WHITE}[${LRED}CONN.ERR.${WHITE}]${RESTORE} Internet connection is required to proceed with"
+        echo -e "             this scripts...\n"
         exit 0
     fi
 }
