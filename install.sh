@@ -177,7 +177,7 @@ continueWget() {
 }
 
 function banner(){
-    echo -e "$LYELLOW" ""
+    echo -e "$LYELLOW"
     echo -e "                                         _    __            _   "
     echo -e "                                        (_)  / _|          | |  "
     echo -e "  ___  ___  __ _  ___   ___        _   _ _  | |_ ___  _ __ | |_ "
