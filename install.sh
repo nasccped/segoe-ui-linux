@@ -47,7 +47,8 @@ function cekkoneksi(){
     # Iterate over each network interface and check internet connectivity
     for interface in $interfaces; do
         echo -ne "\r ${WHITE}[${LYELLOW} TESTING ${WHITE}]${RESTORE} Interface: \`${LCYAN}$interface${RESTORE}\`"
-        if ping -c 1 -I $interface google.com &> /dev/null; then
+        sleep 0.8
+        if ping -c 1 -w 2 -I  $interface google.com &> /dev/null; then
             echo -ne "\r ${WHITE}[${LGREEN}CONNECTED${WHITE}]${RESTORE} Interface: \`${LCYAN}$interface${RESTORE}\`"
             echo " " # break line
             internet_connected=1
