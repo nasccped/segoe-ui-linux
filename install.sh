@@ -188,7 +188,7 @@ function banner(){
     echo -e "           |___/             $LPURPLE mrbvrz$WHITE -$LRED https://hasansuryaman.com"
     echo    ""
     echo -e "$WHITE ---------------------------------------------------------------"
-    echo ""
+    echo -e "$RESTORE"
 }
 
 main(){
