@@ -67,14 +67,20 @@ function cekkoneksi(){
 }
 
 function cekwget(){
-    echo -e "$BLUE [ * ] Checking for Wget"
-    sleep 1
+    # print section title
+    echo -ne " ${WHITE}[|||||||||] Checking for Wget...${RESTORE}"
+    sleep 1.5
+    # erase section title
+    echo -ne "\r                                                   "
+
+    # echo -e "$BLUE [ * ] Checking for Wget"
     which wget > /dev/null 2>&1
     if [ "$?" -eq "0" ]; then
-    echo -e "$GREEN [ ✔ ]$BLUE Wget ➜$GREEN INSTALLED\n"
+        echo -e "\r ${WHITE}[${LGREEN}  FOUND  ${WHITE}]${RESTORE} The \`${LCYAN}wget${RESTORE}\` program was found"
         sleep 1
     else
-        echo -e "$RED [ X ]$BLUE Wget ➜$RED NOT INSTALLED\n"
+        echo -e "\r ${WHITE}[${LRED}NOT FOUND${WHITE}]${RESTORE} The \`${LCYAN}wget${RESTORE}\` program may be necessary to proceed"
+        echo -e "             with the script";
         continueWget
     fi
 }
