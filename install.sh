@@ -80,7 +80,7 @@ function cekwget(){
         sleep 1
     else
         echo -e "\r ${WHITE}[${LRED}NOT FOUND${WHITE}]${RESTORE} The \`${LCYAN}wget${RESTORE}\` program may be necessary to proceed"
-        echo -e "             with the script";
+        echo -e "             with the script!";
         continueWget
     fi
 }
@@ -181,12 +181,13 @@ function end(){
 }
 
 continueWget() {
-  echo -e "$LGREEN Do you want to install Wget? (y)es, (n)o :"
+  echo -ne "\r             Do you want to install Wget? (y)es, (n)o :"
   read  -p ' ' INPUT
   case $INPUT in
     [Yy]* ) wgetinstall;;
     [Nn]* ) end;;
-    * ) echo -e "$RED\n Sorry, try again."; continueWget;;
+    # Move the cursor 1 row up, overwrite the line and call the question again
+    * ) echo -ne "\033[1A\r                                                                       "; continueWget;;
   esac
 }
 
