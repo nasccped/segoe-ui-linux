@@ -34,7 +34,7 @@ function cekkoneksi(){
 
     # print section title
     echo -ne " ${WHITE}[---------] Checking for internet connection...${RESTORE}"
-    sleep 1.5
+    sleep 1
     # erase section title
     echo -ne "\r                                                   "
 
@@ -47,7 +47,7 @@ function cekkoneksi(){
     # Iterate over each network interface and check internet connectivity
     for interface in $interfaces; do
         echo -ne "\r ${WHITE}[${LYELLOW} TESTING ${WHITE}]${RESTORE} Conn. interface: \`${LCYAN}$interface${RESTORE}\`"
-        sleep 0.8
+        sleep 0.5
         if ping -c 1 -w 2 -I  $interface google.com &> /dev/null; then
             echo -ne "\r ${WHITE}[${LGREEN}CONNECTED${WHITE}]${RESTORE} Conn. interface: \`${LCYAN}$interface${RESTORE}\`"
             echo " " # break line
