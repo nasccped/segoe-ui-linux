@@ -19,6 +19,9 @@ LPURPLE='\033[01;35m'
 LCYAN='\033[01;36m'
 WHITE='\033[01;37m'
 
+# Cursor Movement
+MOVE_CURSOR_UP='\033[1A'
+
 # Destination directory
 ROOT_UID=0
 if [ "$UID" -eq "$ROOT_UID" ]; then
@@ -189,7 +192,7 @@ continueWget() {
     [Yy]* ) wgetinstall;;
     [Nn]* ) end;;
     # Move the cursor 1 row up, overwrite the line and call the question again
-    * ) echo -ne "\033[1A\r                                                                       "; continueWget;;
+    * ) echo -ne "${MOVE_CURSOR_UP}\r                                                                       "; continueWget;;
   esac
 }
 
