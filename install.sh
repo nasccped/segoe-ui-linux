@@ -34,7 +34,7 @@ function cekkoneksi(){
     # an already printed line
 
     # print section title
-    echo -ne " ${WHITE}[---------] Checking for internet connection...${RESTORE}"
+    echo -ne " ${WHITE}[ .... ] Checking ${LBLACK}for internet connection...${RESTORE}"
     sleep 1
     # erase section title
     echo -ne "\r                                                   "
@@ -47,29 +47,30 @@ function cekkoneksi(){
 
     # Iterate over each network interface and check internet connectivity
     for interface in $interfaces; do
-        echo -ne "\r ${WHITE}[${LYELLOW} TESTING ${WHITE}]${RESTORE} Conn. interface: \`${LCYAN}$interface${RESTORE}\`"
+        echo -ne "\r ${WHITE}[ .... ] Checking \`${LCYAN}$interface${WHITE}\`${LBLACK} interface"
         sleep 0.5
         if ping -c 1 -w 2 -I  $interface google.com &> /dev/null; then
-            echo -ne "\r ${WHITE}[${LGREEN}CONNECTED${WHITE}]${RESTORE} Conn. interface: \`${LCYAN}$interface${RESTORE}\`"
+            echo -ne "\r ${WHITE}[${GREEN}  OK  ${WHITE}] Interface \`${LCYAN}$interface${WHITE}\`${LBLACK} is connected"
             echo " " # break line
             internet_connected=1
             break  # If connected on any interface, no need to continue testing
-        else
-            echo -ne "\r ${WHITE}[${LRED} OFFLINE ${WHITE}]${RESTORE} Conn. interface: \`${LCYAN}$interface${RESTORE}\`\r"
+        # This block is no longer necessary. The fail alert will be overwrited by the connection error bellow vvv
+        # else
+        #    echo -ne "\r ${WHITE}[${RED}  FAIL  ${WHITE}] Interface${LBLACK} \`${LRED}$interface${LBLACK}\` isn't connected"
         fi
     done
 
     # Check overall connection status
     if [ $internet_connected -eq 0 ]; then
-        echo -e "\r ${WHITE}[${LRED}CONN.ERR.${WHITE}]${RESTORE} Internet connection is required to proceed with"
-        echo -e "             this scripts...\n"
+        echo -e "\r ${WHITE}[${RED} FAIL ${WHITE}] Internet connection is required to proceed with"
+        echo -e "          this scripts...${RESTORE}\n"
         exit 0
     fi
 }
 
 function cekwget(){
     # print section title
-    echo -ne " ${WHITE}[|||||||||] Checking for Wget...${RESTORE}"
+    echo -ne " ${WHITE}[ .... ] Checking${LBLACK} for Wget..."
     sleep 1.5
     # erase section title
     echo -ne "\r                                                   "
@@ -77,11 +78,11 @@ function cekwget(){
     # echo -e "$BLUE [ * ] Checking for Wget"
     which wget > /dev/null 2>&1
     if [ "$?" -eq "0" ]; then
-        echo -e "\r ${WHITE}[${LGREEN}  FOUND  ${WHITE}]${RESTORE} The \`${LCYAN}wget${RESTORE}\` program was found"
+        echo -e "\r ${WHITE}[${GREEN}  OK  ${WHITE}] Program \`${LCYAN}wget${WHITE}\`${LBLACK} was found"
         sleep 1
     else
-        echo -e "\r ${WHITE}[${LRED}NOT FOUND${WHITE}]${RESTORE} The \`${LCYAN}wget${RESTORE}\` program may be necessary to proceed"
-        echo -e "             with the script!";
+        echo -e "\r ${WHITE}[${LRED} FAIL ${WHITE}]${RESTORE} The \`${LCYAN}wget${RESTORE}\` program may be necessary to proceed"
+        echo -e "          with the script!";
         continueWget
     fi
 }
@@ -182,7 +183,7 @@ function end(){
 }
 
 continueWget() {
-  echo -ne "\r             Do you want to install Wget? (y)es, (n)o :"
+  echo -ne "\r          Do you want to install Wget? (y)es, (n)o :"
   read  -p ' ' INPUT
   case $INPUT in
     [Yy]* ) wgetinstall;;
