@@ -33,7 +33,7 @@ function cekkoneksi(){
     # an already printed line
 
     # print section title
-    echo -ne " ${WHITE}[|||||||||] Checking for internet connection...${RESTORE}"
+    echo -ne " ${WHITE}[---------] Checking for internet connection...${RESTORE}"
     sleep 1.5
     # erase section title
     echo -ne "\r                                                   "
