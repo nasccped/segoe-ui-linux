@@ -94,14 +94,14 @@ function cekwget(){
 }
 
 function cekfont(){
-    echo -e "$BLUE [ * ] Checking for Segoe-UI Font"
+    echo -ne " ${WHITE}[ .... ] Checking${LBLACK} for Segoe UI font${RESTORE}"
     sleep 1
+    echo -ne "${ERASER}";
     fc-list | grep -i "Segoe UI" >/dev/null 2>&1
     if [ "$?" -eq "0" ]; then
-    echo -e "$GREEN [ ✔ ]$BLUE Segoe-UI Font ➜$GREEN INSTALLED\n"
-        sleep 1
+        echo -e " ${WHITE}[  ${LGREEN}OK${WHITE}  ] Segoe-UI Font ${LBLACK}is already installed${RESTORE}\n"
     else
-        echo -e "$RED [ X ]$BLUE Segoe-UI Font ➜$RED NOT INSTALLED\n"
+        echo -e " ${WHITE}[ ${LRED}FAIL${WHITE} ] Segoe-UI Font ${LBLACK}isn't installed${RESTORE}"
         continueFont
     fi
 }
