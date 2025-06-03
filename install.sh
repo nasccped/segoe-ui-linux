@@ -107,12 +107,12 @@ function cekfont(){
 }
 
 function continueFont(){
-    echo -e "$LGREEN Do you want to install Segoe-UI Font? (y)es, (n)o :"
+    echo -ne "          Do you want to install Segoe-UI Font? [(y)es/(n)o]"
     read  -p ' ' INPUT
     case $INPUT in
     [Yy]* ) fontinstall;;
     [Nn]* ) end;;
-    * ) echo -e "$RED\n Sorry, try again."; continueFont;;
+    * ) echo -ne "${MOVE_CURSOR_UP}${ERASER}"; continueFont;;
   esac
 }
 
