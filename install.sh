@@ -189,7 +189,7 @@ function end(){
 }
 
 continueWget() {
-  echo -ne "\r          Do you want to install Wget? (y)es, (n)o :"
+  echo -ne "\r          Do you want to install Wget? [(y)es/(n)o]"
   read  -p ' ' INPUT
   case $INPUT in
     [Yy]* ) wgetinstall;;
