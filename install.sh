@@ -119,7 +119,7 @@ function continueFont(){
 function fontinstall(){
     echo -ne " ${WHITE}[ .... ] Checking ${LBLACK}all necessary fonts${RESTORE}"
     sleep 1
-    get_from_github=0
+    missing=false
     font_files=(        \
         "segoeui.ttf"   \
         "segoeuib.ttf"  \
@@ -139,7 +139,7 @@ function fontinstall(){
 
     for fnt in "${font_files[@]}"; do
         if [ ! -f "font/$fnt" ]; then
-            get_from_github=1
+            missing=true
         break
         fi
     done
