@@ -86,7 +86,7 @@ function cekwget(){
     if [ "$status" -eq "0" ]; then
         echo -e " ${WHITE}[${GREEN}  OK  ${WHITE}] Program \`${LCYAN}wget${WHITE}\`${LBLACK} was found${RESTORE}"
     else
-        echo -e " ${WHITE}[${LRED} FAIL ${WHITE}]${RESTORE} The \`${LCYAN}wget${RESTORE}\` program may be necessary to proceed"
+        echo -e " ${WHITE}[${LYELLOW} WARN ${WHITE}]${RESTORE} The \`${LCYAN}wget${RESTORE}\` program may be necessary to proceed"
         echo -e "          with the script!";
         continueWget
     fi
@@ -100,7 +100,7 @@ function cekfont(){
     if [ "$?" -eq "0" ]; then
         echo -e " ${WHITE}[  ${LGREEN}OK${WHITE}  ] Segoe-UI Font ${LBLACK}is already installed${RESTORE}\n"
     else
-        echo -e " ${WHITE}[ ${LRED}FAIL${WHITE} ] Segoe-UI Font ${LBLACK}isn't installed${RESTORE}"
+        echo -e " ${WHITE}[ ${LYELLOW}WARN${WHITE} ] Segoe-UI Font ${LBLACK}isn't installed${RESTORE}"
         continueFont
     fi
 }
