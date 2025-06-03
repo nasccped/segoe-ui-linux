@@ -117,6 +117,35 @@ function continueFont(){
 }
 
 function fontinstall(){
+    echo -ne " ${WHITE}[ .... ] Checking ${LBLACK}all necessary fonts${RESTORE}"
+    sleep 1
+    get_from_github=0
+    font_files=(        \
+        "segoeui.ttf"   \
+        "segoeuib.ttf"  \
+        "segoeuii.ttf"  \
+        "segoeuiz.ttf"  \
+        "segoeuil.ttf"  \
+        "seguili.ttf"   \
+        "segoeuisl.ttf" \
+        "seguisli.ttf"  \
+        "seguisb.ttf"   \
+        "seguisbi.ttf"  \
+        "seguibl.ttf"   \
+        "seguibli.ttf"  \
+        "seguiemj.ttf"  \
+        "seguisym.ttf"  \
+    )
+
+    for fnt in "${font_files[@]}"; do
+        if [ ! -f "font/$fnt" ]; then
+            get_from_github=1
+        break
+        fi
+    done
+    # TODO: this will be resumed
+    exit 0
+
     mkdir -p "$DEST_DIR"
     if [ -d font ]; then
         cp font/segoeui.ttf "$DEST_DIR"/segoeui.ttf > /dev/null 2>&1 # regular
