@@ -177,10 +177,23 @@ function fontinstall(){
     echo -e "$GREEN\n Font installed on $LBLUE'$DEST_DIR'"
 }
 
-function wgetinstall(){   
-    sleep 1
-    sudo apt update > /dev/null 2>&1
-    sudo apt install -y wget > /dev/null 2>&1
+function wgetinstall(){
+    echo -ne " ${WHITE}[ .... ] Installing \`${LCYAN}wget${WHITE}\` ${LBLACK}with ${LGREEN}apt ${LBLACK}package manager"
+    sleep 1.5
+    echo -ne "${ERASER}\r"
+    if [ ! "$UID" -eq "$ROOT_UID" ]; then
+        echo -e " ${WHITE}[ ${LRED}FAIL${WHITE} ] You need to run as ${LGREEN}sudo${WHITE} to install \`${LCYAN}wget${WHITE}\`."
+        echo -e "          Consider using \`${LGREEN}sudo ./install.sh${WHITE}\`${RESTORE}\n"
+        exit 0
+    fi
+    # use 'and' operator (better approach). Install wget only if the 'apt update' returns success
+    apt update > /dev/null 2>&1 && apt install -y wget > /dev/null 2>&1
+    if [ ! $? -eq 0 ]; then
+        echo -e " ${WHITE}[ ${LRED}FAIL${WHITE} ] Couldn't run ${LGREEN}apt update ${WHITE}+ ${LGREEN}apt install -y wget${WHITE}."
+        echo -e "          Consider installing \`${LCYAN}wget${WHITE}\` manually by your OS"
+        echo -e "          package manager!${RESTORE}\n"
+        exit 0
+    fi
 }
 
 function end(){
@@ -192,7 +205,7 @@ continueWget() {
   echo -ne "\r          Do you want to install Wget? [(y)es/(n)o]"
   read  -p ' ' INPUT
   case $INPUT in
-    [Yy]* ) wgetinstall;;
+    [Yy]* ) echo -ne "${ERASER}${MOVE_CURSOR_UP}${ERASER}${MOVE_CURSOR_UP}${ERASER}${MOVE_CURSOR_UP}${ERASER}\r"; wgetinstall;;
     [Nn]* ) end;;
     # Move the cursor 1 row up, overwrite the line and call the question again
     * ) echo -ne "${MOVE_CURSOR_UP}${ERASER}"; continueWget;;
