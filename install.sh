@@ -78,14 +78,13 @@ function cekwget(){
     # print section title
     echo -ne " ${WHITE}[ .... ] Checking${LBLACK} for Wget...${RESTORE}"
     sleep 1.5
-    # erase section title
+    which wget > /dev/null 2>&1
+    status=$?
+
     echo -ne "${ERASER}"
 
-    # echo -e "$BLUE [ * ] Checking for Wget"
-    which wget > /dev/null 2>&1
-    if [ "$?" -eq "0" ]; then
+    if [ "$status" -eq "0" ]; then
         echo -e " ${WHITE}[${GREEN}  OK  ${WHITE}] Program \`${LCYAN}wget${WHITE}\`${LBLACK} was found${RESTORE}"
-        sleep 1
     else
         echo -e " ${WHITE}[${LRED} FAIL ${WHITE}]${RESTORE} The \`${LCYAN}wget${RESTORE}\` program may be necessary to proceed"
         echo -e "          with the script!";
