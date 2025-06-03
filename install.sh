@@ -22,6 +22,9 @@ WHITE='\033[01;37m'
 # Cursor Movement
 MOVE_CURSOR_UP='\033[1A'
 
+# Erase content
+ERASER='\r                                                                      '
+
 # Destination directory
 ROOT_UID=0
 if [ "$UID" -eq "$ROOT_UID" ]; then
@@ -40,7 +43,7 @@ function cekkoneksi(){
     echo -ne " ${WHITE}[ .... ] Checking ${LBLACK}for internet connection...${RESTORE}"
     sleep 1
     # erase section title
-    echo -ne "\r                                                   "
+    echo -ne "${ERASER}"
 
     # List all network interfaces
     interfaces=$(ip -o link show | awk -F': ' '{print $2}')
@@ -76,7 +79,7 @@ function cekwget(){
     echo -ne " ${WHITE}[ .... ] Checking${LBLACK} for Wget..."
     sleep 1.5
     # erase section title
-    echo -ne "\r                                                   "
+    echo -ne "${ERASER}"
 
     # echo -e "$BLUE [ * ] Checking for Wget"
     which wget > /dev/null 2>&1
@@ -192,7 +195,7 @@ continueWget() {
     [Yy]* ) wgetinstall;;
     [Nn]* ) end;;
     # Move the cursor 1 row up, overwrite the line and call the question again
-    * ) echo -ne "${MOVE_CURSOR_UP}\r                                                                       "; continueWget;;
+    * ) echo -ne "${MOVE_CURSOR_UP}${ERASER}"; continueWget;;
   esac
 }
 
