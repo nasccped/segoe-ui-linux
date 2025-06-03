@@ -23,7 +23,7 @@ WHITE='\033[01;37m'
 MOVE_CURSOR_UP='\033[1A'
 
 # Erase content
-ERASER='\r                                                                      \r'
+ERASER='\r                                                                                                    \r'
 
 # Destination directory
 ROOT_UID=0
