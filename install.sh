@@ -53,11 +53,11 @@ function cekkoneksi(){
     for interface in $interfaces; do
         # erase section title
         echo -ne "${ERASER}"
-        echo -ne " ${WHITE}[ .... ] Checking \`${LCYAN}$interface${WHITE}\`${LBLACK} interface"
+        echo -ne " ${WHITE}[ .... ] Checking \`${LCYAN}$interface${WHITE}\`${LBLACK} interface${RESTORE}"
         sleep 0.5
         if ping -c 1 -w 2 -I  $interface google.com &> /dev/null; then
             echo -ne "${ERASER}"
-            echo -e " ${WHITE}[${GREEN}  OK  ${WHITE}] Interface \`${LCYAN}$interface${WHITE}\`${LBLACK} is connected"
+            echo -e " ${WHITE}[${GREEN}  OK  ${WHITE}] Interface \`${LCYAN}$interface${WHITE}\`${LBLACK} is connected${RESTORE}"
             internet_connected=1
             break  # If connected on any interface, no need to continue testing
         # This block is no longer necessary. The fail alert will be overwrited by the connection error bellow vvv
@@ -76,7 +76,7 @@ function cekkoneksi(){
 
 function cekwget(){
     # print section title
-    echo -ne " ${WHITE}[ .... ] Checking${LBLACK} for Wget..."
+    echo -ne " ${WHITE}[ .... ] Checking${LBLACK} for Wget...${RESTORE}"
     sleep 1.5
     # erase section title
     echo -ne "${ERASER}"
@@ -84,7 +84,7 @@ function cekwget(){
     # echo -e "$BLUE [ * ] Checking for Wget"
     which wget > /dev/null 2>&1
     if [ "$?" -eq "0" ]; then
-        echo -e " ${WHITE}[${GREEN}  OK  ${WHITE}] Program \`${LCYAN}wget${WHITE}\`${LBLACK} was found"
+        echo -e " ${WHITE}[${GREEN}  OK  ${WHITE}] Program \`${LCYAN}wget${WHITE}\`${LBLACK} was found${RESTORE}"
         sleep 1
     else
         echo -e " ${WHITE}[${LRED} FAIL ${WHITE}]${RESTORE} The \`${LCYAN}wget${RESTORE}\` program may be necessary to proceed"
@@ -178,7 +178,7 @@ function fontinstall(){
 }
 
 function wgetinstall(){
-    echo -ne " ${WHITE}[ .... ] Installing \`${LCYAN}wget${WHITE}\` ${LBLACK}with ${LGREEN}apt ${LBLACK}package manager"
+    echo -ne " ${WHITE}[ .... ] Installing \`${LCYAN}wget${WHITE}\` ${LBLACK}with ${LGREEN}apt ${LBLACK}package manager${RESTORE}"
     sleep 1.5
     echo -ne "${ERASER}"
     if [ ! "$UID" -eq "$ROOT_UID" ]; then
