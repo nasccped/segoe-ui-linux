@@ -184,7 +184,7 @@ function wgetinstall(){
 }
 
 function end(){
-    echo -e "$LPURPLE\n Bye..... ;)"
+    echo -e "\n${LPURPLE}          Bye....   ;)${RESTORE}\n"
     exit 0
 }
 
