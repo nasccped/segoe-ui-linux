@@ -23,7 +23,7 @@ WHITE='\033[01;37m'
 MOVE_CURSOR_UP='\033[1A'
 
 # Erase content
-ERASER='\r                                                                      '
+ERASER='\r                                                                      \r'
 
 # Destination directory
 ROOT_UID=0
@@ -42,8 +42,6 @@ function cekkoneksi(){
     # print section title
     echo -ne " ${WHITE}[ .... ] Checking ${LBLACK}for internet connection...${RESTORE}"
     sleep 1
-    # erase section title
-    echo -ne "${ERASER}"
 
     # List all network interfaces
     interfaces=$(ip -o link show | awk -F': ' '{print $2}')
@@ -53,11 +51,13 @@ function cekkoneksi(){
 
     # Iterate over each network interface and check internet connectivity
     for interface in $interfaces; do
-        echo -ne "\r ${WHITE}[ .... ] Checking \`${LCYAN}$interface${WHITE}\`${LBLACK} interface"
+        # erase section title
+        echo -ne "${ERASER}"
+        echo -ne " ${WHITE}[ .... ] Checking \`${LCYAN}$interface${WHITE}\`${LBLACK} interface"
         sleep 0.5
         if ping -c 1 -w 2 -I  $interface google.com &> /dev/null; then
-            echo -ne "\r ${WHITE}[${GREEN}  OK  ${WHITE}] Interface \`${LCYAN}$interface${WHITE}\`${LBLACK} is connected"
-            echo " " # break line
+            echo -ne "${ERASER}"
+            echo -e " ${WHITE}[${GREEN}  OK  ${WHITE}] Interface \`${LCYAN}$interface${WHITE}\`${LBLACK} is connected"
             internet_connected=1
             break  # If connected on any interface, no need to continue testing
         # This block is no longer necessary. The fail alert will be overwrited by the connection error bellow vvv
@@ -68,7 +68,7 @@ function cekkoneksi(){
 
     # Check overall connection status
     if [ $internet_connected -eq 0 ]; then
-        echo -e "\r ${WHITE}[${RED} FAIL ${WHITE}] Internet connection is required to proceed with"
+        echo -e " ${WHITE}[${RED} FAIL ${WHITE}] Internet connection is required to proceed with"
         echo -e "          this scripts...${RESTORE}\n"
         exit 0
     fi
@@ -84,10 +84,10 @@ function cekwget(){
     # echo -e "$BLUE [ * ] Checking for Wget"
     which wget > /dev/null 2>&1
     if [ "$?" -eq "0" ]; then
-        echo -e "\r ${WHITE}[${GREEN}  OK  ${WHITE}] Program \`${LCYAN}wget${WHITE}\`${LBLACK} was found"
+        echo -e " ${WHITE}[${GREEN}  OK  ${WHITE}] Program \`${LCYAN}wget${WHITE}\`${LBLACK} was found"
         sleep 1
     else
-        echo -e "\r ${WHITE}[${LRED} FAIL ${WHITE}]${RESTORE} The \`${LCYAN}wget${RESTORE}\` program may be necessary to proceed"
+        echo -e " ${WHITE}[${LRED} FAIL ${WHITE}]${RESTORE} The \`${LCYAN}wget${RESTORE}\` program may be necessary to proceed"
         echo -e "          with the script!";
         continueWget
     fi
@@ -180,7 +180,7 @@ function fontinstall(){
 function wgetinstall(){
     echo -ne " ${WHITE}[ .... ] Installing \`${LCYAN}wget${WHITE}\` ${LBLACK}with ${LGREEN}apt ${LBLACK}package manager"
     sleep 1.5
-    echo -ne "${ERASER}\r"
+    echo -ne "${ERASER}"
     if [ ! "$UID" -eq "$ROOT_UID" ]; then
         echo -e " ${WHITE}[ ${LRED}FAIL${WHITE} ] You need to run as ${LGREEN}sudo${WHITE} to install \`${LCYAN}wget${WHITE}\`."
         echo -e "          Consider using \`${LGREEN}sudo ./install.sh${WHITE}\`${RESTORE}\n"
@@ -205,7 +205,7 @@ continueWget() {
   echo -ne "\r          Do you want to install Wget? [(y)es/(n)o]"
   read  -p ' ' INPUT
   case $INPUT in
-    [Yy]* ) echo -ne "${ERASER}${MOVE_CURSOR_UP}${ERASER}${MOVE_CURSOR_UP}${ERASER}${MOVE_CURSOR_UP}${ERASER}\r"; wgetinstall;;
+    [Yy]* ) echo -ne "${ERASER}${MOVE_CURSOR_UP}${ERASER}${MOVE_CURSOR_UP}${ERASER}${MOVE_CURSOR_UP}${ERASER}"; wgetinstall;;
     [Nn]* ) end;;
     # Move the cursor 1 row up, overwrite the line and call the question again
     * ) echo -ne "${MOVE_CURSOR_UP}${ERASER}"; continueWget;;
