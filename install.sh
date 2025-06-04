@@ -110,7 +110,7 @@ function continueFont(){
     echo -ne "          Do you want to install Segoe-UI Font? [(y)es/(n)o]"
     read  -p ' ' INPUT
     case $INPUT in
-    [Yy]* ) fontinstall;;
+    [Yy]* ) echo -ne "${ERASER}${MOVE_CURSOR_UP}${ERASER}${MOVE_CURSOR_UP}${ERASER}"; fontinstall;;
     [Nn]* ) end;;
     * ) echo -ne "${MOVE_CURSOR_UP}${ERASER}"; continueFont;;
   esac
@@ -137,73 +137,53 @@ function fontinstall(){
         "seguisym.ttf"  \
     )
 
+    # Check if all fonts (static, no problem here) exists
     for fnt in "${font_files[@]}"; do
-        if [ ! -f "font/$fnt" ]; then
+        if [ ! -f "./font/$fnt" ]; then
             missing=true
         break
         fi
     done
-    # TODO: this will be resumed
-    exit 0
+
+    echo -ne "${ERASER}"
+
+    # print missing status
+    if [ "$missing" == "true" ]; then
+        echo -e " ${WHITE}[ ${LYELLOW}WARN ${WHITE}] Some fonts ${LBLACK}are missing."
+        echo -ne " ${WHITE}         They'll be pulled from the ${LCYAN}official repo${RESTORE}."
+    else
+        echo -e " ${WHITE}[  ${LGREEN}OK  ${WHITE}] No fonts ${LBLACK}missing."
+        echo -ne " ${WHITE}         They'll be copied from the '${LCYAN}fonts${WHITE}' dir${RESTORE}."
+    fi
+    sleep 4
 
     mkdir -p "$DEST_DIR"
-    if [ -d font ]; then
-        cp font/segoeui.ttf "$DEST_DIR"/segoeui.ttf > /dev/null 2>&1 # regular
-        cp font/segoeuib.ttf "$DEST_DIR"/segoeuib.ttf > /dev/null 2>&1 # bold
-        cp font/segoeuii.ttf "$DEST_DIR"/segoeuii.ttf > /dev/null 2>&1 # italic
-        cp font/segoeuiz.ttf "$DEST_DIR"/segoeuiz.ttf > /dev/null 2>&1 # bold italic
-        cp font/segoeuil.ttf "$DEST_DIR"/segoeuil.ttf > /dev/null 2>&1 # light
-        cp font/seguili.ttf "$DEST_DIR"/seguili.ttf > /dev/null 2>&1 # light italic
-        cp font/segoeuisl.ttf "$DEST_DIR"/segoeuisl.ttf > /dev/null 2>&1 # semilight
-        cp font/seguisli.ttf "$DEST_DIR"/seguisli.ttf > /dev/null 2>&1 # semilight italic
-        cp font/seguisb.ttf "$DEST_DIR"/seguisb.ttf > /dev/null 2>&1 # semibold
-        cp font/seguisbi.ttf "$DEST_DIR"/seguisbi.ttf > /dev/null 2>&1 # semibold italic
-        cp font/seguibl.ttf "$DEST_DIR"/seguibl.ttf > /dev/null 2>&1 # bold light
-        cp font/seguibli.ttf "$DEST_DIR"/seguibli.ttf > /dev/null 2>&1 # bold light italic
-        cp font/seguiemj.ttf "$DEST_DIR"/seguiemj.ttf > /dev/null 2>&1 # emoji
-        cp font/seguisym.ttf "$DEST_DIR"/seguisym.ttf > /dev/null 2>&1 # symbol
-        cp font/seguihis.ttf "$DEST_DIR"/seguihis.ttf > /dev/null 2>&1 # historic
+    echo -ne "${ERASER}${MOVE_CURSOR_UP}"
+    url_link="https://github.com/mrbvrz/segoe-ui/raw/master/font"
 
-        if [ -d $WINE_FONT_DIR ]; then
-            cp font/segoeui.ttf "$WINE_FONT_DIR"/segoeui.ttf > /dev/null 2>&1 # regular
-            cp font/segoeuib.ttf "$WINE_FONT_DIR"/segoeuib.ttf > /dev/null 2>&1 # bold
-            cp font/segoeuii.ttf "$WINE_FONT_DIR"/segoeuii.ttf > /dev/null 2>&1 # italic
-            cp font/segoeuiz.ttf "$WINE_FONT_DIR"/segoeuiz.ttf > /dev/null 2>&1 # bold italic
-            cp font/segoeuil.ttf "$WINE_FONT_DIR"/segoeuil.ttf > /dev/null 2>&1 # light
-            cp font/seguili.ttf "$WINE_FONT_DIR"/seguili.ttf > /dev/null 2>&1 # light italic
-            cp font/segoeuisl.ttf "$WINE_FONT_DIR"/segoeuisl.ttf > /dev/null 2>&1 # semilight
-            cp font/seguisli.ttf "$WINE_FONT_DIR"/seguisli.ttf > /dev/null 2>&1 # semilight italic
-            cp font/seguisb.ttf "$WINE_FONT_DIR"/seguisb.ttf > /dev/null 2>&1 # semibold
-            cp font/seguisbi.ttf "$WINE_FONT_DIR"/seguisbi.ttf > /dev/null 2>&1 # semibold italic
-            cp font/seguibl.ttf "$WINE_FONT_DIR"/seguibl.ttf > /dev/null 2>&1 # bold light
-            cp font/seguibli.ttf "$WINE_FONT_DIR"/seguibli.ttf > /dev/null 2>&1 # bold light italic
-            cp font/seguiemj.ttf "$WINE_FONT_DIR"/seguiemj.ttf > /dev/null 2>&1 # emoji
-            cp font/seguisym.ttf "$WINE_FONT_DIR"/seguisym.ttf > /dev/null 2>&1 # symbol
-            cp font/seguihis.ttf "$WINE_FONT_DIR"/seguihis.ttf > /dev/null 2>&1 # historic
-            echo -e "$GREEN\n Font installed to WINE $LBLUE'$WINE_FONT_DIR'"
+    # for each font in our list
+    for i in "${!font_files[@]}"; do
+        # if missing, get from github link
+        if [ "$missing" == "true" ]; then
+            wget -q "$url/${font_files[i]}?raw=true" -O "$DEST_DIR/${font_files[i]}" > /dev/null 2>&1
+            echo -ne "${ERASER} ${WHITE}[ ${LCYAN}PULL ${WHITE}] Pulling font${LBLACK} with ${LGREEN}wget ${LBLACK}($((i+1))/${#font_files[@]})${RESTORE}"
+        else
+            # else, copy + wine if enable
+            cp "font/${font_files[i]}" "$DEST_DIR/${font_files[i]}" > /dev/null 2>&1
+            if [ -d $WINE_FONT_DIR ]; then
+                cp "font/${font_files[i]}" "$WINE_FONT_DIR/${font_files[i]}" > /dev/null 2>&1
+            fi
+            echo -ne "${ERASER} ${WHITE}[ ${LCYAN}COPY ${WHITE}] Copying '${LGREEN}${font_files[i]}${WHITE}' ${LBLACK}font ($((i+1))/${#font_files[@]})${RESTORE}"
         fi
-
-    else
-        # Download font from github static link code
-        wget -q https://github.com/mrbvrz/segoe-ui/raw/master/font/segoeui.ttf?raw=true -O "$DEST_DIR"/segoeui.ttf > /dev/null 2>&1 # regular
-        wget -q https://github.com/mrbvrz/segoe-ui/raw/master/font/segoeuib.ttf?raw=true -O "$DEST_DIR"/segoeuib.ttf > /dev/null 2>&1 # bold
-        wget -q https://github.com/mrbvrz/segoe-ui/raw/master/font/segoeuii.ttf?raw=true -O "$DEST_DIR"/segoeuii.ttf > /dev/null 2>&1 # italic
-        wget -q https://github.com/mrbvrz/segoe-ui/raw/master/font/segoeuiz.ttf?raw=true -O "$DEST_DIR"/segoeuiz.ttf > /dev/null 2>&1 # bold italic
-        wget -q https://github.com/mrbvrz/segoe-ui/raw/master/font/segoeuil.ttf?raw=true -O "$DEST_DIR"/segoeuil.ttf > /dev/null 2>&1 # light
-        wget -q https://github.com/mrbvrz/segoe-ui/raw/master/font/seguili.ttf?raw=true -O "$DEST_DIR"/seguili.ttf > /dev/null 2>&1 # light italic
-        wget -q https://github.com/mrbvrz/segoe-ui/raw/master/font/segoeuisl.ttf?raw=true -O "$DEST_DIR"/segoeuisl.ttf > /dev/null 2>&1 # semilight
-        wget -q https://github.com/mrbvrz/segoe-ui/raw/master/font/seguisli.ttf?raw=true -O "$DEST_DIR"/seguisli.ttf > /dev/null 2>&1 # semilight italic
-        wget -q https://github.com/mrbvrz/segoe-ui/raw/master/font/seguisb.ttf?raw=true -O "$DEST_DIR"/seguisb.ttf > /dev/null 2>&1 # semibold
-        wget -q https://github.com/mrbvrz/segoe-ui/raw/master/font/seguisbi.ttf?raw=true -O "$DEST_DIR"/seguisbi.ttf > /dev/null 2>&1 # semibold italic
-        wget -q https://github.com/mrbvrz/segoe-ui/raw/master/font/seguibl.ttf?raw=true -O "$DEST_DIR"/seguibl.ttf > /dev/null 2>&1 # bold light
-        wget -q https://github.com/mrbvrz/segoe-ui/raw/master/font/seguibli.ttf?raw=true -O "$DEST_DIR"/seguibli.ttf > /dev/null 2>&1 # bold light italic
-        wget -q https://github.com/mrbvrz/segoe-ui/raw/master/font/seguiemj.ttf?raw=true -O "$DEST_DIR"/seguiemj.ttf > /dev/null 2>&1 # emoji
-        wget -q https://github.com/mrbvrz/segoe-ui/raw/master/font/seguisym.ttf?raw=true -O "$DEST_DIR"/seguisym.ttf > /dev/null 2>&1 # symbol
-        wget -q https://github.com/mrbvrz/segoe-ui/raw/master/font/seguihis.ttf?raw=true -O "$DEST_DIR"/seguihis.ttf > /dev/null 2>&1 # historic
-    fi
-
+        sleep 0.2
+    done
+    # print final status + cache fonts
+    echo -ne "\n ${WHITE}[  ${LGREEN}OK  ${WHITE}] Fonts successfully${LBLACK} copied/pulled.${RESTORE}"
+    sleep 2.5
+    echo -ne "${ERASER} ${WHITE}[ .... ] Caching ${LBLACK}the added fonts.${RESTORE}"
+    sleep 0.5
     fc-cache -f "$DEST_DIR"
-    echo -e "$GREEN\n Font installed on $LBLUE'$DEST_DIR'"
+    echo -e "\n ${WHITE}[ ${LGREEN}DONE ${WHITE}] Fonts installed on ${LCYAN}${DEST_DIR}${RESTORE}\n"
 }
 
 function wgetinstall(){
